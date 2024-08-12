@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getRefreshToken, setAccessToken } from "../Utils";
+import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:5000",
@@ -10,7 +11,16 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async function (error) {
-    console.log("Interceptor caught an error:", error.response);
+    if (error) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: `This user already exist`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+
     const originalRequest = error.config;
 
     if (error.response.status === 403 && !originalRequest._retry) {

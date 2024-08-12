@@ -3,7 +3,11 @@ import loginImg from "../../../src/assets/rr.png";
 import axios from "../../Hooks/axiosInstance";
 import { setAccessToken, setRefreshToken } from "../../Utils";
 import Swal from "sweetalert2";
+import { useState } from "react";
 export default function Register() {
+  const [otp, setOtp] = useState("");
+  const [otpSend, setOtpSend] = useState(false);
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -18,15 +22,34 @@ export default function Register() {
       data: { accessToken, refreshToken },
     } = await axios.post("/register", body);
     if (status === 201) {
+      setOtpSend(true);
+      setEmail(email);
       setAccessToken(accessToken), setRefreshToken(refreshToken);
+    }
+  };
+
+  const handleOtp = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/verify-otp", { email, otp });
+      if (res.status === 200) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: `Otp verified successfully`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        navigate("/mainPage");
+      }
+    } catch (error) {
       Swal.fire({
         position: "center",
-        icon: "success",
-        title: `Register successfully`,
+        icon: "error",
+        title: `Invalid OTP, please try again`,
         showConfirmButton: false,
         timer: 2000,
       });
-      navigate("/mainPage");
     }
   };
 
@@ -95,6 +118,24 @@ export default function Register() {
                 </h1>
               </div>
             </form>
+            {otpSend && (
+              <form
+                onSubmit={handleOtp}
+                className="flex gap-2 justify-center mb-10"
+              >
+                <input
+                  type="text"
+                  className="input input-bordered w-52"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required
+                />
+                <button type="submit" className="btn bg-yellow-800 ">
+                  Submit
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

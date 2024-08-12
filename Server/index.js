@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Auth = require("./middleWare/Auth.js");
 const cors = require("cors");
+const crypto = require("crypto");
+const sendOtp = require("./middleWare/manageOtp.js");
 
 require("dotenv").config();
 
@@ -24,10 +26,19 @@ app.post("/register", async (req, res) => {
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).send("This user is already register");
+      return res.status(400).send("This user already exist");
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
+    const otp = crypto.randomInt(100000, 999999).toString();
+    await sendOtp({ email, otp });
+    const hashedOtp = await bcrypt.hash(otp, 10);
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      otp: hashedOtp,
+    });
+
     await user.save();
     const accessToken = jwt.sign(
       {
@@ -39,14 +50,36 @@ app.post("/register", async (req, res) => {
       { expiresIn: "1m" }
     );
     const refreshToken = jwt.sign(
-      { id: user._id, name: user.name, password: user.password },
+      {
+        id: user._id,
+        name: user.name,
+        password: user.password,
+      },
       process.env.REFRESH_SECRET,
       { expiresIn: "5d" }
     );
+    user.otp = undefined;
     user.password = undefined;
     return res.status(201).send({ user, accessToken, refreshToken });
   } catch (error) {
     return res.status(500).send({ error: error.message });
+  }
+});
+
+app.post("/verify-otp", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await User.findOne({ email });
+    const isMatchOtp = await bcrypt.compare(otp, user.otp);
+    if (isMatchOtp) {
+      user.verified = true;
+      await user.save();
+      res.status(200).json("Otp verified successfully");
+    } else {
+      res.status(400).json("Invalid OTP");
+    }
+  } catch (error) {
+    console.log("opt verified error", error);
   }
 });
 
@@ -80,11 +113,8 @@ app.post("/login", async (req, res) => {
       process.env.REFRESH_SECRET,
       { expiresIn: "5d" }
     );
-
-    const { password: _, ...restParams } = user._doc;
-    return res
-      .status(201)
-      .send({ user: restParams, accessToken, refreshToken });
+    user.password = undefined;
+    return res.status(201).send({ user, accessToken, refreshToken });
   } catch (error) {
     return res.status(500).send({ error: error.message });
   }
