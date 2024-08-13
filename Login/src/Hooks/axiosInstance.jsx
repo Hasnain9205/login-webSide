@@ -2,8 +2,10 @@ import axios from "axios";
 import { getRefreshToken, setAccessToken } from "../Utils";
 import Swal from "sweetalert2";
 
+axios.defaults.withCreadentials = true;
+
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "login-web-side-api.vercel.app",
 });
 
 axiosInstance.interceptors.response.use(
