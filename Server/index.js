@@ -14,7 +14,13 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(morgan("tiny"));
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://login-web-fontend.vercel.app"],
+    methods: ["POST", "GET"],
+    credentials: true,
+  })
+);
 
 const PORT = process.env.PORT || 5000;
 
