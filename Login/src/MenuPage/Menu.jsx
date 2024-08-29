@@ -5,8 +5,10 @@ import Slider from "../Components/Slider/Slider";
 import Navbar from "../Home/Navbar/Navbar";
 import { getAccessToken } from "../Utils";
 import axios from "../Hooks/axiosInstance.jsx";
+import { useNavigate } from "react-router-dom";
 
-export default function MainPage() {
+export default function Menu() {
+  const navigate = useNavigate();
   useEffect(() => {
     init();
   }, []);
@@ -19,7 +21,9 @@ export default function MainPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (error) {
-      console.error("Error", error);
+      if (error) {
+        navigate("/");
+      }
     }
   };
   return (

@@ -9,6 +9,7 @@ export default function Navbar() {
     removeRefreshToken("refreshToken");
     navigate("/");
   };
+
   const navLinks = (
     <>
       <li>
@@ -24,7 +25,7 @@ export default function Navbar() {
   );
 
   return (
-    <div className="px-20  bg-red-700 shadow-sm">
+    <div className="px-20 bg-red-700 shadow-sm">
       <div className="navbar bg-red-700">
         <div className="navbar-start">
           <div className="dropdown">
@@ -51,15 +52,42 @@ export default function Navbar() {
               {navLinks}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl text-white">daisyUI</a>
+          <Link className="btn btn-ghost text-xl text-white">daisyUI</Link>
         </div>
-        <div className="navbar-center hidden lg:flex">
+        <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal text-white px-1">{navLinks}</ul>
         </div>
-        <div className="navbar-end"></div>
-        <button onClick={handleLogout} className="btn text-white bg-red-500">
-          Logout
-        </button>
+        <div className="dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle avatar"
+          >
+            <div className="w-10 rounded-full">
+              <img
+                alt="User Avatar"
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              />
+            </div>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          >
+            <li>
+              <Link to="/updateProfile" className="justify-between">
+                Profile
+                <span className="badge">Edit</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/settings">Settings</Link>
+            </li>
+            <li>
+              <a onClick={handleLogout}>Logout</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

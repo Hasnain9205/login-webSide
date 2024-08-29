@@ -13,20 +13,40 @@ export default function Login() {
     const password = form.password.value;
     const body = { email, password };
     console.log(email, password);
-    const {
-      status,
-      data: { accessToken, refreshToken },
-    } = await axios.post("/login", body);
-    if (status === 201) {
-      setAccessToken(accessToken), setRefreshToken(refreshToken);
+    try {
+      const { status, data } = await axios.post("/login", body);
+      console.log(data);
+      if (data.user.profileComplete === false) {
+        setAccessToken(data.accessToken), setRefreshToken(data.refreshToken);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Login failed",
+          text: "User not found. Please update your profile",
+          showConfirmButton: true,
+        });
+        navigate("/createProfile");
+      } else if (status === 201) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: `Login successfully`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        console.log(data.user.profileComplete);
+        navigate("/menu");
+      }
+    } catch (error) {
       Swal.fire({
         position: "center",
-        icon: "success",
-        title: `Login successfully`,
-        showConfirmButton: false,
-        timer: 2000,
+        icon: "error",
+        title: "Login failed",
+        text:
+          error.response?.data?.message ||
+          "User not found. Please update your profile",
+        showConfirmButton: true,
       });
-      navigate("/mainPage");
     }
   };
   return (

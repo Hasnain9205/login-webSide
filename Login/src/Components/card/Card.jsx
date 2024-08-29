@@ -1,6 +1,6 @@
 export default function Card() {
   return (
-    <div className="grid grid-cols-3 gap-6 mx-10 mt-10">
+    <div className="grid grid-cols-4 gap-6 mx-20 mt-10">
       <div className="card bg-base-100 w-96 shadow-xl">
         <figure>
           <img

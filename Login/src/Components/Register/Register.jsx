@@ -17,17 +17,31 @@ export default function Register() {
     const password = form.password.value;
     const body = { name, email, password };
     console.log(name, email, password);
-    const {
-      status,
-      data: { accessToken, refreshToken },
-    } = await axios.post("/register", body);
-    if (status === 201) {
-      setOtpSend(true);
-      setEmail(email);
-      setAccessToken(accessToken), setRefreshToken(refreshToken);
+
+    try {
+      const { status, data } = await axios.post("/register", body);
+      if (status === 201) {
+        setOtpSend(true);
+        setEmail(email);
+        setAccessToken(data.accessToken), setRefreshToken(data.refreshToken);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Registration successful",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Registration failed",
+        text: error.response?.data?.message || "OTP error",
+        showConfirmButton: true,
+      });
     }
   };
-
   const handleOtp = async (e) => {
     e.preventDefault();
     try {
@@ -36,11 +50,11 @@ export default function Register() {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: `Otp verified successfully`,
+          title: `Otp verified and Register successfully`,
           showConfirmButton: false,
           timer: 2000,
         });
-        navigate("/mainPage");
+        navigate("/createProfile");
       }
     } catch (error) {
       if (
@@ -55,6 +69,7 @@ export default function Register() {
           showConfirmButton: false,
           timer: 2000,
         });
+        setOtpSend(false);
       } else {
         Swal.fire({
           position: "center",
