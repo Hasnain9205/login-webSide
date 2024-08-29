@@ -16,17 +16,7 @@ export default function Login() {
     try {
       const { status, data } = await axios.post("/login", body);
       console.log(data);
-      if (data.user.profileComplete === false) {
-        setAccessToken(data.accessToken), setRefreshToken(data.refreshToken);
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Login failed",
-          text: "User not found. Please update your profile",
-          showConfirmButton: true,
-        });
-        navigate("/createProfile");
-      } else if (status === 201) {
+      if (status === 201) {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -36,6 +26,16 @@ export default function Login() {
         });
         console.log(data.user.profileComplete);
         navigate("/menu");
+      } else if (data.user.profileComplete === false) {
+        setAccessToken(data.accessToken), setRefreshToken(data.refreshToken);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Login failed",
+          text: "User not found. Please update your profile",
+          showConfirmButton: true,
+        });
+        navigate("/createProfile");
       }
     } catch (error) {
       Swal.fire({
