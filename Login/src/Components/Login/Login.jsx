@@ -18,6 +18,7 @@ export default function Login() {
       console.log(data);
       console.log(status);
       if (status === 201) {
+        setAccessToken(data.accessToken), setRefreshToken(data.refreshToken);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -27,26 +28,6 @@ export default function Login() {
         });
         console.log(data.user.profileComplete);
         navigate("/menu");
-      }
-      if (data.user.profileComplete) {
-        setAccessToken(data.accessToken), setRefreshToken(data.refreshToken);
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Login failed",
-          text: "User not found. Please update your profile",
-          showConfirmButton: true,
-        });
-        navigate("/menu");
-      } else {
-        Swal.fire({
-          position: "center",
-          icon: "info",
-          title: "Complete your profile",
-          text: "Please complete your profile to proceed",
-          showConfirmButton: true,
-        });
-        navigate("/createProfile");
       }
     } catch (error) {
       Swal.fire({
@@ -93,7 +74,10 @@ export default function Login() {
                   required
                 />
                 <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
+                  <a
+                    href="forgot-password"
+                    className="label-text-alt link link-hover"
+                  >
                     Forgot password?
                   </a>
                 </label>
