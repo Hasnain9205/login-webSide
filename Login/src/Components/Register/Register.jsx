@@ -155,7 +155,7 @@ export default function Register() {
                   onChange={(e) => setOtp(e.target.value)}
                   required
                 />
-                <button type="submit" className="btn bg-yellow-800 ">
+                <button type="submit" className="btn text-white bg-yellow-600 ">
                   Submit
                 </button>
               </form>

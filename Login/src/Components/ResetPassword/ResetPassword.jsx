@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import axios from "../../Hooks/axiosInstance";
-import forgotImg from "../../../src/assets/forgot-password-icon-9.png";
+import forgotImg from "../../../src/assets/r.png";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -52,11 +52,11 @@ export default function ResetPassword() {
                 type="number"
                 className="input input-bordered"
                 required
-                placeholder="Enter your Password"
+                placeholder="Enter your new Password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
-              <button type="submit" className="btn bg-yellow-600">
+              <button type="submit" className="btn text-white bg-yellow-600">
                 Rest Password
               </button>
             </form>

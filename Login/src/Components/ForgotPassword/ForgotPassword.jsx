@@ -2,11 +2,9 @@ import Swal from "sweetalert2";
 import axios from "../../Hooks/axiosInstance";
 import forgotImg from "../../../src/assets/forgot-password-icon-9.png";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const navigate = useNavigate("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -20,7 +18,7 @@ export default function ForgotPassword() {
           showConfirmButton: false,
           timer: 5000,
         });
-        navigate("/login");
+        window.location.href = "https://mail.google.com/mail/u/0/#inbox";
       }
     } catch (error) {
       {
@@ -54,7 +52,9 @@ export default function ForgotPassword() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="btn bg-yellow-600">Send reset link</button>
+              <button className="btn text-white bg-yellow-600">
+                Send reset link
+              </button>
             </form>
           </div>
         </div>
