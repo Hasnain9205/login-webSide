@@ -15,7 +15,7 @@ export default function CreateProfile() {
     try {
       const token = getAccessToken("accessToken");
       console.log(token);
-      const res = await axios.post("/createProfile", body, {
+      const res = await axios.post("/profile/createProfile", body, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

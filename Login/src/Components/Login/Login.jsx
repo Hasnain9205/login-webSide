@@ -14,7 +14,7 @@ export default function Login() {
     const body = { email, password };
     console.log(email, password);
     try {
-      const { status, data } = await axios.post("/login", body);
+      const { status, data } = await axios.post("/auth/login", body);
       console.log(data);
       console.log(status);
       if (status === 201) {

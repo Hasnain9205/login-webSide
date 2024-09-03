@@ -11,7 +11,7 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`/reset-password/${id}/${token}`, {
+      const res = await axios.post(`/password/reset-password/${id}/${token}`, {
         newPassword,
       });
       console.log(res.data);

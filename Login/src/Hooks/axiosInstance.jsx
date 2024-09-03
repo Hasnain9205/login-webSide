@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 const axiosInstance = axios.create({
   baseURL: "https://backend-loginpage.onrender.com",
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.response.use(
@@ -28,7 +29,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const refreshToken = getRefreshToken("refreshToken");
-        const { data } = await axiosInstance.get("/refresh", {
+        const { data } = await axiosInstance.get("/auth/refresh", {
           headers: {
             Authorization: `Bearer ${refreshToken}`,
           },

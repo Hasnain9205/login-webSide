@@ -8,7 +8,7 @@ export default function ForgotPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/forgot-password", { email });
+      const res = await axios.post("/password/forgot-password", { email });
       console.log(res);
       if (res.status === 200) {
         Swal.fire({

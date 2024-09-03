@@ -18,7 +18,7 @@ export default function UpdateProfile() {
   const init = async () => {
     try {
       const token = getAccessToken("accessToken");
-      const { data } = await axios.get("/getProfile", {
+      const { data } = await axios.get("/profile/getProfile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -50,7 +50,7 @@ export default function UpdateProfile() {
     try {
       const token = getAccessToken("accessToken");
       console.log(token);
-      const res = await axios.put("/updateProfile", body, {
+      const res = await axios.put("/profile/updateProfile", body, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

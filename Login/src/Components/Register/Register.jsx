@@ -19,7 +19,7 @@ export default function Register() {
     console.log(name, email, password);
 
     try {
-      const { status, data } = await axios.post("/register", body);
+      const { status, data } = await axios.post("/auth/register", body);
       if (status === 201) {
         setOtpSend(true);
         setEmail(email);
@@ -45,7 +45,7 @@ export default function Register() {
   const handleOtp = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/verify-otp", { email, otp });
+      const res = await axios.post("/auth/verify-otp", { email, otp });
       if (res.status === 200) {
         Swal.fire({
           position: "center",
