@@ -20,6 +20,7 @@ export default function Register() {
 
     try {
       const { status, data } = await axios.post("/auth/register", body);
+      console.log("status", status);
       if (status === 201) {
         setOtpSend(true);
         setEmail(email);

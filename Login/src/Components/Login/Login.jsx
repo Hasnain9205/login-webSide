@@ -26,8 +26,11 @@ export default function Login() {
           showConfirmButton: false,
           timer: 2000,
         });
-        console.log(data.user.profileComplete);
-        navigate("/menu");
+        if (data.updateProfile) {
+          navigate("/createProfile");
+        } else {
+          navigate("/menu");
+        }
       }
     } catch (error) {
       Swal.fire({
